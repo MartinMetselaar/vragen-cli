@@ -1,6 +1,5 @@
 import Foundation
 import ArgumentParser
-import VragenAPIModels
 import VragenSDKNetwork
 
 struct Surveys: ParsableCommand {
@@ -43,7 +42,7 @@ struct Surveys: ParsableCommand {
     }
 
     struct Get: ParsableCommand {
-        @Option(help: "Survey identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try SurveySynchroniseNetwork()
@@ -58,7 +57,7 @@ struct Surveys: ParsableCommand {
     }
 
     struct GetWithChildren: ParsableCommand {
-        @Option(help: "Survey identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try SurveySynchroniseNetwork()
@@ -73,7 +72,7 @@ struct Surveys: ParsableCommand {
     }
 
     struct Update: ParsableCommand {
-        @Option(help: "Survey identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var identifier: UUID
         @Option var title: String
 
         mutating func run() throws {
@@ -90,7 +89,7 @@ struct Surveys: ParsableCommand {
     }
 
     struct Delete: ParsableCommand {
-        @Option(help: "Survey identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try SurveySynchroniseNetwork()

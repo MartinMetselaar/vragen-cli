@@ -1,6 +1,5 @@
 import Foundation
 import ArgumentParser
-import VragenAPIModels
 import VragenSDKNetwork
 
 struct Answers: ParsableCommand {
@@ -11,8 +10,8 @@ struct Answers: ParsableCommand {
     defaultSubcommand: List.self)
 
     struct List: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var question: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var question: UUID
 
         @Option(help: "Page index") var page: Int?
         @Option(help: "Number of items") var per: Int?
@@ -30,8 +29,8 @@ struct Answers: ParsableCommand {
     }
 
     struct Create: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var question: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var question: UUID
         @Option var title: String
 
         mutating func run() throws {
@@ -48,9 +47,9 @@ struct Answers: ParsableCommand {
     }
 
     struct Get: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var question: String
-        @Option(help: "Answer identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var question: UUID
+        @Option(help: "Answer identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try AnswerSynchroniseNetwork()
@@ -65,9 +64,9 @@ struct Answers: ParsableCommand {
     }
 
     struct Update: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var question: String
-        @Option(help: "Answer identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var question: UUID
+        @Option(help: "Answer identifier as UUID") var identifier: UUID
         @Option var title: String
 
         mutating func run() throws {
@@ -84,9 +83,9 @@ struct Answers: ParsableCommand {
     }
 
     struct Delete: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var question: String
-        @Option(help: "Answer identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var question: UUID
+        @Option(help: "Answer identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try AnswerSynchroniseNetwork()

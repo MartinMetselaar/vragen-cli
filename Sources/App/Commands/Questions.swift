@@ -1,6 +1,5 @@
 import Foundation
 import ArgumentParser
-import VragenAPIModels
 import VragenSDKNetwork
 
 struct Questions: ParsableCommand {
@@ -11,7 +10,7 @@ struct Questions: ParsableCommand {
     defaultSubcommand: List.self)
 
     struct List: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
 
         @Option(help: "Page index") var page: Int?
         @Option(help: "Number of items") var per: Int?
@@ -29,7 +28,7 @@ struct Questions: ParsableCommand {
     }
 
     struct Create: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
         @Option var title: String
 
         mutating func run() throws {
@@ -46,8 +45,8 @@ struct Questions: ParsableCommand {
     }
 
     struct Get: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try QuestionSynchroniseNetwork()
@@ -62,8 +61,8 @@ struct Questions: ParsableCommand {
     }
 
     struct Update: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var identifier: UUID
         @Option var title: String
 
         mutating func run() throws {
@@ -80,8 +79,8 @@ struct Questions: ParsableCommand {
     }
 
     struct Delete: ParsableCommand {
-        @Option(help: "Survey identifier") var survey: String
-        @Option(help: "Question identifier") var identifier: String
+        @Option(help: "Survey identifier as UUID") var survey: UUID
+        @Option(help: "Question identifier as UUID") var identifier: UUID
 
         mutating func run() throws {
             let client = try QuestionSynchroniseNetwork()
