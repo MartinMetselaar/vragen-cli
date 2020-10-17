@@ -5,7 +5,7 @@ import VragenSDKNetwork
 struct Surveys: ParsableCommand {
     public static var configuration = CommandConfiguration(
     subcommands: [
-        Create.self, List.self, Get.self, GetWithChildren.self, Update.self, Delete.self
+        Create.self, List.self, Get.self, GetWithChildren.self, Update.self, Delete.self, Results.self
     ],
     defaultSubcommand: List.self)
 
@@ -102,6 +102,35 @@ struct Surveys: ParsableCommand {
             }
         }
     }
+
+    struct Results: ParsableCommand {
+        @Option(help: "Survey identifier as UUID") var identifier: UUID
+
+        @Option(name: [.customLong("output")], help: "Output CSV file")
+        var outputFile: String
+
+        func validate() throws {
+            // We don't want to overwrite files
+            if FileManager.default.fileExists(atPath: outputFile) {
+                throw RuntimeError("File already exists at '\(outputFile)'")
+            }
+        }
+
+        mutating func run() throws {
+            let client = try SurveySynchroniseNetwork()
+            let result = client.results(identifier: identifier)
+            switch result {
+                case .success(let result):
+                    guard let _ = try? result.write(toFile: outputFile, atomically: true, encoding: .utf8) else {
+                        throw RuntimeError("Couldn't write to '\(outputFile)'")
+                    }
+                    print("Successfully stored at '\(outputFile)'")
+                case .failure(let error):
+                    print("Error: \(error)")
+            }
+        }
+    }
+
 }
 
 extension SurveySynchroniseNetwork {
