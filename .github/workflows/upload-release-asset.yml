@@ -1,0 +1,36 @@
+name: Add asset to the release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: swift test
+      - name: Build
+        run: swift build -c release
+      - name: Zip release
+        run: |
+          zip --junk-paths vragen ./.build/release/vragen
+      - name: Get GitHub release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Asset
+        id: upload_release_asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./vragen.zip
+          asset_name: vragen.zip
+          asset_content_type: application/octet-stream
+        
